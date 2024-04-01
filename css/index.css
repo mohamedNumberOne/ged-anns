@@ -1,0 +1,252 @@
+:root {
+    /* --bleu: #085281;
+    --vert: #62b996;*/
+    --dore: #ecde84;
+    --rouge: #ff1908;
+    --violet: #7f2082;
+    --bleu: #123274;
+    --bciel: #00aff4;
+}
+
+
+
+body {
+    /* background-color: var(--vert) ;  */
+    /* background-image: linear-gradient(35deg, var(--bleu), white,
+            var(--violet)); */
+
+    background-image: url("../img/bg_courrier2.jpg") !important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    background-attachment: fixed;
+    background-size: cover;
+
+    background-repeat: no-repeat;
+    background-position: top;
+}
+
+
+.section_form {
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(244, 241, 241, 0.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 500px;
+
+}
+
+.box-shadow {
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(244, 241, 241, 0.5);
+    padding: 20px;
+}
+
+.div_form {
+    width: 45%;
+}
+
+.div_img {
+    width: 45%;
+}
+
+.div_img img {
+    width: 100%;
+}
+
+.icone {
+    color: var(--dore);
+}
+
+.titre-page {
+    display: inline-block;
+    border-radius: 5px;
+    padding: 2px 15px;
+    padding-bottom: 5px;
+}
+
+
+table {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+
+.link {
+    text-decoration: none !important;
+    color: white;
+    padding: 5px;
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
+
+}
+
+.link:hover {
+    color: white !important;
+}
+
+
+
+.link_modifier {
+    background-color: var(--dore);
+}
+
+.container .icone {
+
+    animation: 5s icone_anim linear infinite;
+    position: relative;
+    left: 0;
+}
+
+@keyframes icone_anim {
+
+    0% {
+        left: 0;
+    }
+
+    10% {
+        left: 10px;
+    }
+
+    50% {
+        left: 0px;
+    }
+
+    100% {
+        left: 0;
+    }
+
+}
+
+.btn-recherche {
+    display: inline-block;
+    background-color: var(--bleu) !important;
+    color: white;
+}
+
+.badge-dore {
+    background-color: var(--dore) !important;
+    color: rgb(71, 71, 71);
+    cursor: pointer;
+}
+
+
+/* debut header */
+
+nav a {
+    color: black !important;
+}
+
+.dropdown-menu a {
+    color: black !important;
+}
+
+
+.logo {
+    width: 60px;
+    border-radius: 5px;
+}
+
+
+.my_nav {
+
+    /* background-color: var(--bleu) !important; */
+    background-color: white !important;
+    color: black !important;
+
+}
+
+.navbar-brand {
+    margin-right: auto !important;
+}
+
+.btn-deco {
+    background-color: var(--dore);
+}
+
+/* fin header */
+
+
+/* debut c_envoyes */
+
+.container_tab {
+    width: 90%;
+    margin: auto;
+}
+
+.content_table {
+    width: 100%;
+    overflow-x: auto !important;
+
+}
+
+.content_table table {
+
+    width: auto;
+}
+
+.table-bordered td,
+.table-bordered th {
+    border-color: #c3c5c6;
+    word-wrap: break-word;
+    white-space: wrap;
+}
+
+.content_table table td {
+    min-width: 140px;
+    max-width: 300px;
+    font-size: 14px;
+    padding: 5px;
+    width: auto;
+}
+
+
+
+.traite {
+    background-color: white;
+    padding: 5px;
+    border-radius: 10px;
+    position: relative;
+    top: 10px;
+}
+
+.not_yet {
+
+    background-color: red !important;
+    color: white !important;
+}
+
+.done {
+    color: green !important;
+
+}
+
+
+.traite_done {
+    color: rgb(255, 255, 255) !important;
+    background-color: green;
+}
+
+
+.anim_red {
+    animation: anim_red 1s infinite linear;
+    color: white;
+}
+
+
+@keyframes anim_red {
+    0% {
+        background: red;
+    }
+
+    60% {
+        background: red;
+    }
+
+    61% {
+        background: black;
+    }
+}

@@ -1,0 +1,124 @@
+
+CREATE TABLE services_internes ( 
+
+    id_service  SMALLINT(3) PRIMARY KEY AUTO_INCREMENT   ,
+    nom_service varchar(250) ,
+    grade_service SMALLINT(2) DEFAULT  NULL 
+    
+    
+);
+
+ ___________
+
+CREATE TABLE users ( 
+
+    id_user int(5) PRIMARY KEY AUTO_INCREMENT NOT null ,
+    nom_user varchar(100) ,
+    pnom_user varchar(100) ,
+    email_user varchar(100) UNIQUE ,
+    ps_user varchar(150) ,
+    poste_user varchar(150) ,  
+    grade_user SMALLINT(2) ,
+    id_service SMALLINT(3) ,
+	
+    FOREIGN KEY (id_service) REFERENCES services_internes  (id_service)  ON DELETE CASCADE 
+);
+
+_________________
+
+
+CREATE TABLE courriers ( 
+
+    id_cour int(6) PRIMARY KEY AUTO_INCREMENT   ,
+    ref varchar(30) UNIQUE ,
+    sujet varchar(250) UNIQUE ,
+    
+    date_enr date DEFAULT NOW() ,
+    date_arrive date DEFAULT NOW() ,
+    id_user int(5) not null ,
+    txt_cour text(255) ,
+    FOREIGN KEY (id_user) REFERENCES users (id_user)  ON DELETE CASCADE 
+    
+);
+____________
+
+
+CREATE TABLE org_exterieurs ( 
+
+    id_org int(6) PRIMARY KEY AUTO_INCREMENT   ,
+    nom_org varchar(120)
+  
+);
+
+___________________
+
+CREATE TABLE envoyer ( 
+
+    id_env int(6) PRIMARY KEY AUTO_INCREMENT   ,
+    id_cour int(6) ,
+    id_service 	SMALLINT(3) ,
+    id_org int(6) ,
+  	id_user int(5) ,
+    type boolean ,
+	traite  boolean DEFAULT 0 ,
+    urgent  boolean DEFAULT 0 ,
+ 	confidentiel  boolean DEFAULT 0 ,
+    important  boolean DEFAULT 0 ,
+    date_env date ,
+    FOREIGN KEY (id_cour) REFERENCES  courriers  (id_cour)  ON DELETE CASCADE ,
+    FOREIGN KEY (id_service) REFERENCES  services_internes  (id_service)  ON DELETE CASCADE ,
+    FOREIGN KEY (id_org) REFERENCES  org_exterieurs  (id_org)  ON DELETE CASCADE ,
+    FOREIGN KEY (id_user) REFERENCES  users  (id_user)   ON DELETE CASCADE
+    
+);
+
+_______________________
+
+
+CREATE TABLE repenses ( 
+
+    id_rep int(6) PRIMARY KEY AUTO_INCREMENT   ,
+    id_cour int(6) ,
+    id_user int(5) ,
+    txt_rep text(255) ,
+    FOREIGN KEY (id_cour) REFERENCES  courriers  (id_cour)  ON DELETE CASCADE ,
+  	
+    FOREIGN KEY (id_user) REFERENCES  users  (id_user)   ON DELETE CASCADE
+    
+);
+
+
+______________________
+
+
+CREATE TABLE fichiers_rep ( 
+	id_fichier_rep int(6) PRIMARY KEY AUTO_INCREMENT   ,
+    id_rep int(6)  ,
+    src_fichier_rep text(255) ,
+     
+    FOREIGN KEY (id_rep) REFERENCES  repenses  (id_rep)   ON DELETE CASCADE
+    
+);
+
+
+
+______________________
+
+
+CREATE TABLE fichiers_cour ( 
+	id_fichier_cour int(6) PRIMARY KEY AUTO_INCREMENT   ,
+    id_cour int(6) , 
+    src_fichier_cour text(255) ,
+
+     FOREIGN KEY (id_cour) REFERENCES  courriers  (id_cour)  ON DELETE CASCADE 
+    
+);
+
+
+
+
+
+
+
+
+

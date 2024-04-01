@@ -1,0 +1,70 @@
+.statistiques {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 30px;
+    padding-top: 20px;
+    background-color:  rgba(255,255,255,0.6) ;
+    border: 2px solid #eee;
+    border-radius: 10px;
+}
+
+.one_stat {
+    width: 35px;
+    height: 150px;
+    /* border-radius: 20px 20px 0 0 ;  */
+    border: 1px solid black;
+    position: relative;
+    overflow: hidden;
+    margin: auto;
+    box-shadow: 0 0 10px #444444;
+}
+
+.pourcentage {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    border-top: 1px solid rgb(95, 94, 94);
+    animation: pourcentage_anim 0.5s linear 1;
+
+}
+
+.div_num {
+    margin-top: 5px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.important {
+    background:var(--violet) ;
+    color:white;
+    border-radius: 5px;
+    
+}
+
+.confidentiel {
+    background: #646060   ;
+    color:white;
+    border-radius: 5px;
+}
+
+.secret {
+    
+    background: #ffe120   ;
+    color:white;
+    border-radius: 5px;
+}
+
+
+@keyframes pourcentage_anim {
+
+    0% {
+        height: 0px;
+    }
+
+    100% {
+        height: 100%;
+    }
+
+}
