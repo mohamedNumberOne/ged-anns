@@ -24,7 +24,7 @@
         $cnx->connect($_POST['email'], $_POST['ps']);
     }
 
-    // $cnx ->   add_user( 'm@gmail.com' ,  "" ) ; 
+    //  $cnx ->   add_user( 'ins@gmail.com' ,  "123" ) ; 
 
 
     ?>

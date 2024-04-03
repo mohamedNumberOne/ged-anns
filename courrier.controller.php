@@ -6,7 +6,8 @@ class courrier extends cnx
 {
 
     //
-    public function add_courrier($ref, $sujet_courrier, $date_arrive, $txt_cour, $id_groupe)
+    public function add_courrier($ref, $sujet_courrier, $date_arrive, $txt_cour)
+    // public function add_courrier($ref, $sujet_courrier, $date_arrive, $txt_cour, $id_groupe)
     {
 
         // id_cour	ref	sujet	date_enr	date_arrive	id_user	txt_cour	
@@ -19,88 +20,88 @@ class courrier extends cnx
         $txt_cour = $this->secure_input($txt_cour);
 
         // Verify   id_groupe :
-        $sql = "SELECT id_service from services_internes where id_service = ? ";
+        // $sql = "SELECT id_service from services_internes where id_service = ? ";
+        // $exec = $this->cnxt_to_db()->prepare($sql);
+
+        // $exec->execute([$id_groupe]);
+        // $row = $exec->rowCount();
+
+        // if ( count($id_groupe) > 0 ) {  
+
+        // Verify   ref :
+        $sql = "SELECT ref from courriers where ref = ? ";
         $exec = $this->cnxt_to_db()->prepare($sql);
 
-        $exec->execute([$id_groupe]);
-        $row = $exec->rowCount();
+        $exec->execute([$ref]);
+        $row_ref = $exec->rowCount();
 
-        if ($row === 1) {
+        if ($row_ref === 0) {
 
-            // Verify   ref :
-            $sql = "SELECT ref from courriers where ref = ? ";
+            // Verify   sujet :
+            $sql = "SELECT sujet from courriers where sujet = ? ";
             $exec = $this->cnxt_to_db()->prepare($sql);
 
-            $exec->execute([$ref]);
-            $row_ref = $exec->rowCount();
+            $exec->execute([$sujet_courrier]);
+            $row_sujet_courrier = $exec->rowCount();
 
-            if ($row_ref === 0) {
-
-                // Verify   sujet :
-                $sql = "SELECT sujet from courriers where sujet = ? ";
-                $exec = $this->cnxt_to_db()->prepare($sql);
-
-                $exec->execute([$sujet_courrier]);
-                $row_sujet_courrier = $exec->rowCount();
-
-                if ($row_sujet_courrier == 0) {
+            if ($row_sujet_courrier == 0) {
 
 
 
-                    try {
+                try {
 
-                        $cnx = new PDO('mysql:host=' . 'localhost' . ';dbname=' . 'baridi_health', 'root', '', array(1002 => 'SET NAMES utf8'));
-                        // $cnx = new PDO('mysql:host=' . 'mysql.at.dz' . ';dbname=' .  'db0547_anns-3', 'u0547',  'n51HosfniLxfEjPV', array(1002 => 'SET NAMES utf8'));
-                        $cnx->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    $cnx = new PDO('mysql:host=' . 'localhost' . ';dbname=' . 'baridi_health', 'root', '', array(1002 => 'SET NAMES utf8'));
+                    // $cnx = new PDO('mysql:host=' . 'mysql.at.dz' . ';dbname=' .  'db0547_anns-3', 'u0547',  'n51HosfniLxfEjPV', array(1002 => 'SET NAMES utf8'));
+                    $cnx->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
-                        $id_user = $_SESSION['id_user'];
-                        date_default_timezone_set('Africa/Algiers');
-                        $now = date("Y-m-d H-i-s");
+                    $id_user = $_SESSION['id_user'];
+                    date_default_timezone_set('Africa/Algiers');
+                    $now = date("Y-m-d H-i-s");
 
-                        $sql = "INSERT INTO courriers VALUES 
+                    $sql = "INSERT INTO courriers VALUES 
                         ( NULL , ? , ? ,  '$now'  , ? ,  '$id_user'  , ? ) ";
 
-                        // id_cour	ref	sujet	date_enr	date_arrive	id_user	txt_cour	)
+                    // id_cour	ref	sujet	date_enr	date_arrive	id_user	txt_cour	)
 
-                        // $ref, $sujet_courrier ,   $date_arrive,   $txt_cour
+                    // $ref, $sujet_courrier ,   $date_arrive,   $txt_cour
 
-                        $exec = $cnx->prepare($sql);
-                        $exec->execute([$ref, $sujet_courrier, $date_arrive, $txt_cour]);
+                    $exec = $cnx->prepare($sql);
+                    $exec->execute([$ref, $sujet_courrier, $date_arrive, $txt_cour]);
 
-                        $row_insert = $exec->rowCount();
+                    $row_insert = $exec->rowCount();
 
-                        if ($row_insert === 1) {
-                            $last_id_cour = $cnx->lastInsertId();
-                        } else {
-                            $last_id_cour = 0;
-                        }
-
-                        return $last_id_cour;
-                    } catch (PDOException $e) {
-
-                        echo $e->getMessage();
+                    if ($row_insert === 1) {
+                        $last_id_cour = $cnx->lastInsertId();
+                    } else {
+                        $last_id_cour = 0;
                     }
-                } else {
-                    $_SESSION['added'] = "<div class='alert alert-warning text-center ' > 
-                                            <b> Cet Objet existe déja ! </b> 
-                                      </div>";
-                    header('location:nouveau_courrier.php');
-                    return 0;
+
+                    return $last_id_cour;
+                } catch (PDOException $e) {
+
+                    echo $e->getMessage();
                 }
             } else {
-
                 $_SESSION['added'] = "<div class='alert alert-warning text-center ' > 
-                                            <b> Cette référence existe déja ! </b> 
+                                            <b> Cet Objet existe déja ! </b> 
                                       </div>";
                 header('location:nouveau_courrier.php');
                 return 0;
             }
         } else {
 
-            $_SESSION['added'] = "<div class='alert alert-warning text-center ' > <b> Erreur dans la destination! </b> </div>";
+            $_SESSION['added'] = "<div class='alert alert-warning text-center ' > 
+                                            <b> Cette référence existe déja ! </b> 
+                                      </div>";
             header('location:nouveau_courrier.php');
+            return 0;
         }
+        // } else {
+
+        //     $_SESSION['added'] = "<div class='alert alert-warning text-center ' > <b> Erreur dans la destination! </b> </div>";
+        //     header('location:nouveau_courrier.php');
+        // }
     }
 
 
@@ -117,26 +118,30 @@ class courrier extends cnx
             $cnx->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             $last_id_cour = $this->secure_input($last_id_cour);
-            $id_service = $this->secure_input($id_service);
+            // $id_service = $this->secure_input($id_service); 
             $id_user = $_SESSION['id_user'];
 
-            $sql = "INSERT INTO envoyer VALUES 
+            foreach ($id_service as $value_service) {
+
+                $sql = "INSERT INTO envoyer VALUES 
                 ( NULL , ? , ?  , NULL , /* => id_org */   '$id_user'  , 0 , 0 , ? /*=> urgnt */ , ?  , ? ,  0  , 0 , NULL , now() ) ";
 
-            //    	type	, traite	, urgent	, confidentiel	, important, 	secret, 	date_env	
-            // id_env, id_cour,id_service, id_org	, id_user,type, traite	, urgent	, confidentiel	, important, 	secret, vu , date_vu, date_env	
+                //    	type	, traite	, urgent	, confidentiel	, important, 	secret, 	date_env	
+                // id_env, id_cour,id_service, id_org	, id_user,type, traite	, urgent	, confidentiel	, important, 	secret, vu , date_vu, date_env	
 
-            $exec = $cnx->prepare($sql);
-            $exec->execute([$last_id_cour, $id_service, $urgent, $confidentiel, $important]);
+                $exec = $cnx->prepare($sql);
+                $exec->execute([$last_id_cour, $value_service, $urgent, $confidentiel, $important]);
 
 
-            $row_insert = $exec->rowCount();
+                $row_insert = $exec->rowCount();
 
-            if ($row_insert === 1) {
-                $last_id = $cnx->lastInsertId();
-            } else {
-                $last_id = 0;
+                if ($row_insert === 1) {
+                    $last_id = $cnx->lastInsertId();
+                } else {
+                    $last_id = 0;
+                }
             }
+
 
 
             return $last_id;
@@ -215,18 +220,29 @@ class courrier extends cnx
         $row = $exec->rowCount();
 
         if ($row > 0) {
-            echo "
-            <label class='rounded p-1 badg badge-light'> <b> Envoyer à </b> </label>
-            <select class='form-control' name='groupe' required >
-            <option value='' > </option> 
-            ";
+            // echo "
+            // <label class='rounded p-1 badg badge-light'> <b> Envoyer à </b> </label>
+            // <select class='form-control' name='groupe' required multiple >
+            // <option value='' > </option> 
+            // ";
+            // foreach ($exec as $key => $value) {
+            //     $id_service = $value['id_service'];
+            //     $nom_service = ucfirst($value['nom_service']);
+
+            //     echo "<option value='$id_service' > $nom_service </option>";
+            // }
+            // echo " </select> ";
+
             foreach ($exec as $key => $value) {
                 $id_service = $value['id_service'];
                 $nom_service = ucfirst($value['nom_service']);
 
-                echo "<option value='$id_service' > $nom_service </option>";
+                echo "  <div class='d-inline-block m-2 w-25 badge-dore badge' > 
+                            <label for='$nom_service' > $nom_service    </label>
+                            <input name='groupe[]' type='checkbox'  value='$id_service'  id='$nom_service' >  
+                            
+                        </div> ";
             }
-            echo " </select> ";
         } else {
             echo "pas de services !";
         }
@@ -264,7 +280,7 @@ class courrier extends cnx
     public function get_all__service_courriers_envoyes($id_service)
     {
 
-        $sql = "SELECT * ,  
+        $sql = "SELECT   * ,  
         date(date_env) as date_env , time(date_env) as time_env ,  date(date_vu) as date_vu ,   time(date_vu) as time_vu
         from envoyer  
                 INNER JOIN services_internes on  services_internes.id_service = envoyer.id_service
@@ -644,7 +660,9 @@ class courrier extends cnx
 
         if ($this->verify_id("courriers", 'id_cour', $id_cour)) {
 
-            $sql = "SELECT * ,  
+            // $id_service = $_SESSION['id_service'] ;
+            // echo $id_service ;
+            $sql = "SELECT  * ,  
                 date(date_env) as date_env , time(date_env) as time_env ,  date(date_vu) as date_vu , time(date_vu) as time_vu
 
                 from envoyer  
@@ -652,14 +670,14 @@ class courrier extends cnx
                     INNER JOIN courriers on  courriers.id_cour = envoyer.id_cour
                     INNER JOIN users on  users.id_user = envoyer.id_user
                     INNER JOIN fichiers_cour on  fichiers_cour.id_cour = envoyer.id_cour
-                    WHERE  courriers.id_cour = ?    ";
+                    WHERE  courriers.id_cour = ?   ";
 
 
             $exec = $this->cnxt_to_db()->prepare($sql);
             $exec->execute([$id_cour]);
 
             $row = $exec->rowCount();
-            if ($row == 1) {
+            if ($row >= 1) {
 
                 foreach ($exec as $key => $value) {
 
@@ -831,6 +849,14 @@ class courrier extends cnx
                                      </div> 
 
                                      <hr>
+
+                                    <div> <span class='badge badge-dark badge-dore ' > Destinsation 	  
+                                     <i class='fa-solid fa-location-pin'></i> </span>
+                                     : <b> <i class='fa-solid fa-hotel'></i> 
+                                        $nom_service </b>  
+                                    </div> 
+
+                                        <hr>
 
                                      <div> <span class='badge badge-dark badge-dore ' >  Date  
                                             <i class='fa-solid fa-calendar-days'></i> </span>
@@ -1098,8 +1124,8 @@ class courrier extends cnx
         $exec->execute([$id_cour]);
 
         $row = $exec->rowCount();
-        if ($row === 1) {
-            foreach ($exec as $key) {  // => mahoch ydkhol hna 
+        if ($row >= 1) {
+            foreach ($exec as $key) {
 
                 $id_user_envoyeur = $key['id_user_envoyeur'];
                 $id_service_recepteur = $key['id_service_recepteur'];
@@ -1121,7 +1147,7 @@ class courrier extends cnx
                         if (
                             ($id_service_user_connected ==  $id_service_recepteur) ||
                             ($id_service_user_connected  == $id_service_envoyeur)
-                            // 1
+                            ||  1
                             // or or id_sg has access to 
                         ) {
                             return 1;
@@ -1206,7 +1232,6 @@ class courrier extends cnx
             return 0;
         }
     }
-
 
 
     public function recherche_ref($ref)

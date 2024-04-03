@@ -21,7 +21,7 @@ if (isset($_POST['add_courrier'])  && $_SERVER["REQUEST_METHOD"] == "POST") {
         )
         && !empty(trim($_POST['ref']))
         && !empty(trim($_POST['sujet']))
-        && !empty(trim($_POST['groupe']))
+        && !empty(($_POST['groupe']))
         && !empty(trim($_POST['date_courrier']))
 
 
@@ -34,7 +34,7 @@ if (isset($_POST['add_courrier'])  && $_SERVER["REQUEST_METHOD"] == "POST") {
 
             $ref = $courrier->secure_input($_POST['ref']);
             $sujet = $courrier->secure_input($_POST['sujet']);
-            $groupe = $courrier->secure_input($_POST['groupe']);
+            $groupe = ($_POST['groupe']);
             $confidentiel = $courrier->secure_input($_POST['confidentiel']);
             // $secret = $courrier->secure_input($_POST['secret']); 
             $urgent = $courrier->secure_input($_POST['urgent']);
@@ -132,14 +132,15 @@ if (isset($_POST['add_courrier'])  && $_SERVER["REQUEST_METHOD"] == "POST") {
                                 $dest_path = $uploadFileDir . $newFileName;
 
                                 if (move_uploaded_file($fileTmpPath, $dest_path)) {
-                                    $last_id_cour = $courrier->add_courrier($ref, $sujet, $date_courrier, $msg, $groupe);
+                                    $last_id_cour = $courrier->add_courrier($ref, $sujet, $date_courrier, $msg  ); 
+                                    // $last_id_cour = $courrier->add_courrier($ref, $sujet, $date_courrier, $msg, $groupe);  
                                     $last_id =  $last_id_cour;
                                     // $ref, $sujet_courrier,   $date_arrive,   $txt_cour 
                                     if ($last_id) {
 
                                         if ($courrier->add_envoyer(
                                             $last_id,
-                                            $groupe,
+                                            $groupe, 
                                             $urgent,
                                             $confidentiel,
                                             $important

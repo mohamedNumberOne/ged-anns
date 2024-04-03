@@ -55,7 +55,7 @@
                 $id = $courrier->secure_input($_GET['id']);
                 if ($courrier->verify_id('courriers', 'id_cour', $id)) {
 
-                    if ($courrier->has_access_courrier($id)) 
+                    if ($courrier->has_access_courrier($id) ) 
                     {
                         if (!$courrier->is_courrier_vu($id)) 
                         {
